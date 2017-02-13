@@ -158,7 +158,7 @@ class ResourceList(with_metaclass(ResourceListMeta, Resource)):
         schema_kwargs = self.schema.get('get_kwargs', {})
         schema_kwargs.update({'many': True})
         try:
-            schema = compute_schema(self.schema['cls'], schema_kwargs, qs, None)
+            schema = compute_schema(self.schema['cls'], schema_kwargs, qs, qs.include)
         except InvalidField as e:
             return jsonapi_errors_serializer([e.to_dict()]), e.status
 
