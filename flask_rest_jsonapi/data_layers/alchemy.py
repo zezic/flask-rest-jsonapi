@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+import datetime
+from sqlalchemy.dialects.postgresql import TIMESTAMP
+
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.collections import InstrumentedList
 from sqlalchemy.sql.expression import desc, asc, text
@@ -252,6 +255,11 @@ class SqlalchemyDataLayer(BaseDataLayer):
                     continue
                 if item['value'] == 'null':
                     item['value'] = None
+                if column.type is TIMESTAMP:
+                    try:
+                        item['value'] = datetime.datetime.strptime(item['value'], '%Y-%m-%dT%H:%M:%S.%fZ')
+                    except ValueError:
+                        raise Exception("You tryin to use unknown format %s for filtering by datetime field." % item['value'])
                 filt = getattr(column, attr)(item['value'])
                 query = query.filter(filt)
 
