@@ -255,7 +255,7 @@ class SqlalchemyDataLayer(BaseDataLayer):
                     continue
                 if item['value'] == 'null':
                     item['value'] = None
-                if column.type is TIMESTAMP:
+                if isinstance(column.type, TIMESTAMP):
                     try:
                         item['value'] = datetime.datetime.strptime(item['value'], '%Y-%m-%dT%H:%M:%S.%fZ')
                     except ValueError:
