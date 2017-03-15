@@ -49,4 +49,6 @@ def add_pagination_links(data, item_count, querystring, base_url):
         all_qs_args.update({'page[number]': current_page + 1})
         links['next'] = '?'.join((base_url, urlencode(all_qs_args)))
 
+    links['count'] = item_count
+
     data['links'] = links
