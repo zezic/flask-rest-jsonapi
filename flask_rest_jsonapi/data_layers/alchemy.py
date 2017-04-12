@@ -262,7 +262,10 @@ class SqlalchemyDataLayer(BaseDataLayer):
                         item['value'] = datetime.datetime.strptime(item['value'], '%Y-%m-%dT%H:%M:%S.%fZ')
                     except ValueError:
                         raise Exception("You tryin to use unknown format %s for filtering by datetime field." % item['value'])
-                filt = getattr(column, attr)(item['value'])
+                if item['op'] == 'any':
+                    filt = getattr(column, attr)(**item['value'])
+                else:
+                    filt = getattr(column, attr)(item['value'])
                 query = query.filter(filt)
 
         return query
